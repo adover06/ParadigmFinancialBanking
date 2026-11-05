@@ -1,0 +1,20 @@
+services:
+	mysql:
+		image: mysql:8.4
+		restart: unless-stopped
+		ports:
+			- "3306:3306"
+		environment:
+			MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
+			MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
+			MYSQL_USER: ${MYSQL_USER:-app}
+			MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD}
+		volumes:
+			- mysql_data:/var/lib/mysql
+		labels:
+			# - "traefik.enable=true"
+			# - "traefik.tcp.routers.mysql.rule=HostSNI(`mysql.example.com`)"
+			# - "traefik.tcp.routers.mysql.entrypoints=mysql"
+			# - "traefik.tcp.services.mysql.loadbalancer.server.port=3306"
+volumes:
+	mysql_data:
