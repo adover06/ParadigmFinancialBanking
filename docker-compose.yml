@@ -14,7 +14,7 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=public"
       - "traefik.tcp.routers.pfb-mysql.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.pfb-mysql.entrypoints=mysql"
       - "traefik.tcp.services.pfb-mysql.loadbalancer.server.port=3306"
