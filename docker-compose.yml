@@ -2,20 +2,23 @@ services:
   mysql:
     image: mysql:8.4
     restart: unless-stopped
-    ports:
-      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-app}
-      MYSQL_USER: ${MYSQL_USER:-app}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - internal
+      - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.tcp.routers.mysql.rule=HostSNI(`db.andrewdover.com`)"
-      - "traefik.tcp.routers.mysql.entrypoints=mysql"
-      - "traefik.tcp.services.mysql.loadbalancer.server.port=3306"
+      - "traefik.docker.network=traefik"
+      - "traefik.tcp.routers.pfb-mysql.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.pfb-mysql.entrypoints=mysql"
+      - "traefik.tcp.services.pfb-mysql.loadbalancer.server.port=3306"
+
   phpmyadmin:
     image: phpmyadmin:5
     restart: unless-stopped
@@ -23,13 +26,20 @@ services:
       - mysql
     environment:
       PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_ARBITRARY: "0"
+    networks:
+      - internal
+      - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.phpmyadmin.rule=Host(`pma.andrewdover.com`)"
-      - "traefik.http.routers.phpmyadmin.entrypoints=websecure"
-      - "traefik.http.routers.phpmyadmin.tls=true"
-      - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.pfb-pma.rule=Host(`pma.andrewdover.com`)"
+      - "traefik.http.routers.pfb-pma.entrypoints=websecure"
+      - "traefik.http.routers.pfb-pma.tls.certresolver=letsencrypt"
+
+networks:
+  internal:
+  traefik:
+    external: true
+
 volumes:
   mysql_data:
