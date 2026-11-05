@@ -12,9 +12,9 @@ services:
 		volumes:
 			- mysql_data:/var/lib/mysql
 		labels:
-			# - "traefik.enable=true"
-			# - "traefik.tcp.routers.mysql.rule=HostSNI(`mysql.example.com`)"
-			# - "traefik.tcp.routers.mysql.entrypoints=mysql"
-			# - "traefik.tcp.services.mysql.loadbalancer.server.port=3306"
+			- "traefik.enable=true"
+			- "traefik.tcp.routers.mysql.rule=HostSNI(`db.andrewdover.com`)"
+			- "traefik.tcp.routers.mysql.entrypoints=mysql"
+			- "traefik.tcp.services.mysql.loadbalancer.server.port=3306"
 volumes:
 	mysql_data:
