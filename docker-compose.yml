@@ -11,7 +11,7 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - internal
-      - traefik
+      - public
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=public"
@@ -28,17 +28,17 @@ services:
       PMA_HOST: mysql
     networks:
       - internal
-      - traefik
+      - public
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=public"
       - "traefik.http.routers.pfb-pma.rule=Host(`pma.andrewdover.com`)"
       - "traefik.http.routers.pfb-pma.entrypoints=websecure"
       - "traefik.http.routers.pfb-pma.tls.certresolver=letsencrypt"
 
 networks:
   internal:
-  traefik:
+  public:
     external: true
 
 volumes:
