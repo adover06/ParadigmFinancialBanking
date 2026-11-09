@@ -7,17 +7,12 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - internal
-      - public
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=public"
-      - "traefik.tcp.routers.pfb-mysql.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.pfb-mysql.entrypoints=mysql"
-      - "traefik.tcp.services.pfb-mysql.loadbalancer.server.port=3306"
 
   phpmyadmin:
     image: phpmyadmin:5
