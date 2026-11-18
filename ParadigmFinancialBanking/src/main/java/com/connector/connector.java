@@ -47,6 +47,7 @@ public class connector {
         }
 
         // Close the statement and connection
+        rs.close();
         st.close();
         con.close();
         System.out.println("Connection Closed....");
