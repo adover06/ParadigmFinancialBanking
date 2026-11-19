@@ -42,8 +42,14 @@ public class connector {
         // Process the results
         System.out.println("Processing results");
         while (rs.next()) {
-            String name = rs.getString("name"); // Retrieve name from db
-            System.out.println(name); // Print result on console
+                String customerId = rs.getString("customer_id");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String email = rs.getString("email");
+                String phoneNumber = rs.getString("phone_number");
+                String dob = rs.getString("DOB");
+                System.out.printf("Customer ID: %s | Name: %s | Address: %s | Email: %s | Phone: %s | DOB: %s%n",
+                    customerId, name, address, email, phoneNumber, dob);
         }
 
         // Close the statement and connection
