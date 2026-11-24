@@ -1,3 +1,7 @@
+package com.pfb.model;
+
+import java.time.LocalDate;
+
 public class Transfer {
     private int amount;
     private LocalDate transferDate;

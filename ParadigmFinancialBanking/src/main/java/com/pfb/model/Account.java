@@ -1,3 +1,5 @@
+package com.pfb.model;
+
 public class Account {
     private int accountId;
     private int customerId;

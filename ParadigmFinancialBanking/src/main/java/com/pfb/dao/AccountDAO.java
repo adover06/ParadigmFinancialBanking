@@ -1,6 +1,8 @@
+package com.pfb.dao;
 
-import model.Account;
-import util.DatabaseConnection;
+
+import com.pfb.model.Account;
+import com.pfb.db.Db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,18 +16,18 @@ public class AccountDAO {
     public void addAccount(Account account) {
         String sql = """
             INSERT INTO Account
-            (account_id, customer_id, acocunt_type, balance)
+            (account_id, customer_id, account_type, balance)
             VALUES (?, ?, ?, ?)
         """;
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
+            Connection connection = Db.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
         ) {
             statement.setInt(1, account.getAccountId());
             statement.setInt(2, account.getCustomerId());
             statement.setString(3, account.getAccountType());
-            statement.setDouble(4, account.getBalance());
+            statement.setInt(4, account.getBalance());
 
             statement.executeUpdate();
 
@@ -37,13 +39,13 @@ public class AccountDAO {
 
     public Account findAccountById(int accountId) {
         String sql = """
-            SELECT accound_id, customer_id, account_type, balance
+            SELECT account_id, customer_id, account_type, balance
             FROM Account
             WHERE account_id = ?
             """;
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
+            Connection connection = Db.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
         ) {
             statement.setInt(1, accountId);
@@ -54,7 +56,7 @@ public class AccountDAO {
                     result.getInt("account_id"),
                     result.getInt("customer_id"),
                     result.getString("account_type"),
-                    result.getDouble("balance")
+                    result.getInt("balance")
                 );
             }
         } catch (SQLException e) {

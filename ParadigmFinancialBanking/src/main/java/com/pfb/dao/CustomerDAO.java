@@ -1,5 +1,7 @@
-import model.Account;
-import util.DatabaseConnection;
+package com.pfb.dao;
+
+import com.pfb.model.Customer;
+import com.pfb.db.Db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +12,12 @@ public class CustomerDAO {
     
     public void addCustomer(Customer customer) {
         String sql = """
-            INSERT INTO CUSTOMER (customer_id, name, address, email, phone_number, date_of_birth)
+            INSERT INTO Customer (customer_id, name, address, email, phone_number, DOB)
             VALUES (?, ?, ?, ?, ?, ?)
         """;
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
+            Connection connection = Db.getConnection();
 
             PreparedStatement statement = connection.prepareStatement(sql);
         ) {
@@ -23,24 +25,26 @@ public class CustomerDAO {
             statement.setString(2, customer.getName());
             statement.setString(3, customer.getAddress());
             statement.setString(4, customer.getEmail());
-            statement.String(5, customer.getPhoneNumber());
+            statement.setString(5, customer.getPhoneNumber());
 
-            statement.setDate(6, java.sql.Date.valueOf(customer.getDateOfBirth()));
+            statement.setDate(6, java.sql.Date.valueOf(customer.getDob()));
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Customer findCustomerByIDd(int customerId) {
+    public Customer findCustomerById(int customerId) {
         String sql = """
-            SELECT customer_id, name, address, email, phone_number, date_of_birth
+            SELECT customer_id, name, address, email, phone_number, DOB
             FROM Customer
             WHERE customer_id = ?
         """;
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.preparedStatement(sql);
+            Connection connection = Db.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql);
 
         ) {
             statement.setInt(1, customerId);
@@ -53,8 +57,8 @@ public class CustomerDAO {
                     result.getString("name"),
                     result.getString("address"),
                     result.getString("email"),
-                    result.getString("phone_number"),
-                    result.getDate("date_of_birth").toLocalDate()
+                    result.getDate("DOB").toLocalDate(),
+                    result.getString("phone_number")
 
                 );
             }

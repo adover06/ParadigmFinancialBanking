@@ -1,5 +1,7 @@
-import model.LoanPayment;
-import util.DatabaseConnection;
+package com.pfb.dao;
+
+import com.pfb.model.LoanPayment;
+import com.pfb.db.Db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +12,12 @@ public class LoanPaymentDAO {
     
     public void addLoanPayment(LoanPayment loanPayment) {
         String sql = """
-            INSERT INTO LOAN_PAYMENT (payment_id, loan_id, payment_date, amount)
+            INSERT INTO LoanPayment (payment_id, loan_id, payment_date, amount)
             VALUES (?, ?, ?, ?)
             """;
 
         try (
-            Connection connection = Database.getConnection();
+            Connection connection = Db.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
         ) {
             statement.setInt(1, loanPayment.getPaymentId());
@@ -37,7 +39,7 @@ public class LoanPaymentDAO {
             """;
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
+            Connection connection = Db.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
         ) {
             statement.setInt(1, paymentId);

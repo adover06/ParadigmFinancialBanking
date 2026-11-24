@@ -1,3 +1,7 @@
+package com.pfb.model;
+
+import java.time.LocalDate;
+
 public class Loan {
     private int loanId;
     private int interestRate;
