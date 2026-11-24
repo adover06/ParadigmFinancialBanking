@@ -4,15 +4,18 @@ public class Customer {
     private String address;
     private String email;
     private LocalDate dob;
+    private String phoneNumber;
 
-    public Customer(int customerId, String name, String address, String email, LocalDate dob) {
+    public Customer(int customerId, String name, String address, String email, LocalDate dob, String phoneNumber) {
         this.customerId = customerId;
         this.name = name;
         this.address = address;
         this.email = email;
         this.dob = dob;
+        this.phoneNumber = phoneNumber;
     }
 
+    
     //getters
     public int getCustomerId() {
         return customerId;
@@ -54,5 +57,15 @@ public class Customer {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
