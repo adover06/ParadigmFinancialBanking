@@ -1,3 +1,7 @@
+package com.pfb.model;
+
+import java.time.LocalDate;
+
 public class Transaction {
     private int transactionId;
     private int amount;

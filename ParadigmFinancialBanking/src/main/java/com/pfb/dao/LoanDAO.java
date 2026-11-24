@@ -1,5 +1,7 @@
-import model.Loan;
-import util.DatabaseConnection;
+package com.pfb.dao;
+
+import com.pfb.model.Loan;
+import com.pfb.db.Db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +12,12 @@ import java.sql.SQLException;
 public class LoanDAO {
     public void addLoan(Loan loan) {
         String sql = """
-            INSERT INTO LOAN (loan_id, interest_rate, loan_type, account_id, start_date, amount)
+            INSERT INTO Loan (loan_id, interest_rate, loan_type, account_id, start_date, amount)
             VALUES (?, ?, ?, ?, ?, ?)
             """;
         
          try (
-            Connection connection = DatabaseConnection.getConnection();
+            Connection connection = Db.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
          ) {
             statement.setInt(1, loan.getLoanId());
@@ -24,6 +26,8 @@ public class LoanDAO {
             statement.setInt(4, loan.getAccountId());
             statement.setDate(5, java.sql.Date.valueOf(loan.getStartDate()));
             statement.setInt(6, loan.getAmount());
+
+            statement.executeUpdate();
 
          } catch (SQLException e) {
             e.printStackTrace();
@@ -38,7 +42,7 @@ public class LoanDAO {
             """;
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
+            Connection connection = Db.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
         ) {
             statement.setInt(1, loanId);
