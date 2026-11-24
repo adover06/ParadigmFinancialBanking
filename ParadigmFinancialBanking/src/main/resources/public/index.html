@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PFB</title>
+</head>
+<body style="max-width: 400px; margin: auto;">
+<h1>Paradigm Financial Banking</h1>
+
+<h2>Find Customer</h2>
+<input id="findId" placeholder="Customer ID">
+<button onclick="find()">Find</button>
+<pre id="result"></pre>
+
+<h2>Add Customer</h2>
+<form id="add">
+<input name="id" placeholder="ID"><br>
+<input name="name" placeholder="Name"><br>
+<input name="address" placeholder="Address"><br>
+<input name="email" placeholder="Email"><br>
+<input name="phone" placeholder="Phone"><br>
+<input name="dob" type="date"><br>
+<button>Add</button>
+</form>
+<p id="status"></p>
+
+<script>
+async function find() {
+    const res = await fetch("/api/customers/" + document.getElementById("findId").value);
+    document.getElementById("result").textContent = res.ok ? JSON.stringify(await res.json(), null, 2) : "Not found";
+}
+
+document.getElementById("add").onsubmit = async e => {
+    e.preventDefault();
+    const res = await fetch("/api/customers", { method: "POST", body: new URLSearchParams(new FormData(e.target)) });
+    document.getElementById("status").textContent = res.ok ? "Added" : "Error";
+};
+</script>
+</body>
+</html>
